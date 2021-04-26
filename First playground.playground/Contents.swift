@@ -23,3 +23,15 @@ var notYetDefined: Any
 notYetDefined = ""
 notYetDefined = 42
 
+var initialString = "hello world"
+initialString.capitalized
+initialString.uppercased()
+
+var emptyTabString: [String] = []
+
+var aTab = ["A", "B", "C", "Z"]
+aTab[2...] = ["D", "E", "F"]
+aTab[1...3]
+
+var emptyArray: [String: Int] = [:]
+//emptyArray[""]
