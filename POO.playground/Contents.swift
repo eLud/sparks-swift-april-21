@@ -23,6 +23,15 @@ class Animal {
     let name: String
     var age: Int
 
+    var humanAge: Int {
+        get {
+            return age
+        }
+        set {
+            age = newValue
+        }
+    }
+
     init(name: String, age: Int) {
         self.age = age
         self.name = name
@@ -31,16 +40,45 @@ class Animal {
 
 class Dog: Animal {
 
-    var owner: String
+    // Stored property with observers
+    var owner: String {
+        willSet {
+            print("Owner will change. Current owner is \(owner), future will be \(newValue)")
+        }
+        didSet {
+            print("Owner did change. Current owner is \(owner), previous was be \(oldValue)")
+            owner = "Test"
+        }
+    }
 
     init(name: String, age: Int, owner: String) {
         self.owner = owner
         super.init(name: name, age: age)
     }
+
+    override var humanAge: Int {
+        get {
+            return age * 7
+        }
+
+        set {
+            age = newValue / 7
+        }
+    }
+
+//    override var age: Int {
+//        get {
+//            return 42
+//        }
+//
+//        set {
+//
+//        }
+//    }
 }
 
 let dog1 = Dog(name: "Médor", age: 5, owner: "")
-let dog2 = Dog(name: "Brutus", age: 10, owner: "")
+let dog2 = Dog(name: "Brutus", age: 10, owner: "Toto")
 
 //dog2 = Dog(name: "", age: 0)
 
@@ -56,3 +94,103 @@ let result = ingredients.contains { str -> Bool in
     return str == "C"
 }
 
+dog2.owner = "Toto"
+dog2.owner = "Titi"
+dog2.owner = "Tata"
+
+struct Employee {
+    var salary: Double
+
+    mutating func raiseSalary(by amount: Double) {
+        salary += amount
+    }
+}
+
+struct Trainee {}
+
+class Company {
+
+    var employees: [Employee] = []
+    var trainees: [Trainee] = []
+
+    func add(_ employee: Employee) {
+        employees.append(employee)
+    }
+
+    func add(_ trainee: Trainee) {
+        trainees.append(trainee)
+    }
+
+    func removeEmployee(at index: Int) {
+        employees.remove(at: index)
+        print("index 0")
+    }
+
+    func removeEmployee(id: Int) {
+//        employees.remove(at: index)
+    }
+
+    func remove(_ employee: Employee) {
+
+    }
+
+    func raiseSalary(for employee: inout Employee) {
+        //employee.raiseSalary()
+    }
+
+    // Variadic parameters
+    func raiseSalary(employees: Employee..., amount: Int) {
+
+    }
+}
+
+var apple = Company()
+
+var newEmployee = Employee(salary: 0)
+//newEmployee.raiseSalary(by: 100)
+
+let newTrainee = Trainee()
+//apple.addEmployee(employee: newEmployee)
+apple.add(newEmployee)
+apple.add(newTrainee)
+
+apple.removeEmployee(at: 0)
+apple.removeEmployee(id: 23456)
+apple.remove(newEmployee)
+
+var aSet = Set<String>()
+aSet.insert("Ludovic")
+aSet.insert("Ludovic")
+
+// In Out
+apple.raiseSalary(for: &newEmployee)
+apple.raiseSalary(employees: newEmployee, amount: 10)
+print("toto", "titi", 42, true)
+
+
+// Optionals
+struct FaceID {
+    var resolution: Int = 500
+}
+
+struct Ipad {
+    var frequency = 200
+    var faceId: FaceID?
+}
+
+var ipadModels = [2020 : Ipad()]
+
+//let iPad2020 = ipadModels[2020]! // Force unwrap operator ->> Baad
+
+if ipadModels[2020] != nil {
+
+}
+
+if let iPad2020 = ipadModels[2021] {
+    let frequency2020 = iPad2020.frequency
+    let frequency2021 = frequency2020 * 2
+} else {
+    print("Not found the model")
+}
+
+let reso = ipadModels[2020]?.faceId?.resolution ?? 0 // Nil coalescing operator : default value

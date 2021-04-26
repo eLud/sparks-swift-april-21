@@ -6,12 +6,12 @@ struct Ingredient: Hashable {
     let isVeggie: Bool
 }
 
-struct Meal {
+struct Meal: Hashable {
     let name: String
     var ingredients: Set<Ingredient>
     let price: Double
     let pitch: String
-    let preciseDescription: String
+    let preciseDescription: Optional<String>
 
     // Computed property
     var isVeggie: Bool {
@@ -30,3 +30,45 @@ let saladeCésar = Meal(name: "Salade césar", ingredients: [salade, poulet], pr
 
 saladeEntrée.isVeggie
 saladeCésar.isVeggie
+
+class Restaurant {
+    let name: String
+    let address: String
+    private var meals: Set<Meal>
+    private(set) var mealsArray: Array<Meal>
+    let pitch: String
+
+    var mediumMealPrice: Double {
+        let sum = meals.reduce(0.0) { (previous, meal) -> Double in
+            return previous + meal.price
+        }
+        return sum / Double(meals.count)
+    }
+
+    init(name: String, address: String, pitch: String, meals: [Meal] = []) {
+        self.name = name
+        self.address = address
+        self.pitch = pitch
+        self.meals = Set(meals)
+        self.mealsArray = meals
+    }
+
+    func add(_ newMeal: Meal) {
+        meals.insert(newMeal)
+        mealsArray.append(newMeal)
+    }
+
+    func remove(_ mealToRemove: Meal) {
+        meals.remove(mealToRemove)
+
+        if let index = mealsArray.firstIndex(of: mealToRemove) {
+            mealsArray.remove(at: index)
+        }
+    }
+}
+
+let test = [42.3, 67.7, 98.54]
+test.reduce(0.0, +)
+
+
+let myResto = Restaurant(name: "test", address: "", pitch: "")
