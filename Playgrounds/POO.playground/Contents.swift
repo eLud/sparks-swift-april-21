@@ -269,3 +269,39 @@ loadImage(from: URL(string: "http://apple.com")!) { (str) in
 }
 
 print("End of playground")
+
+
+//Protocols
+
+protocol Named {
+    var name: String { get }
+}
+
+protocol FullyNamed: Named {
+    var fullName: String { get }
+}
+
+// Extension de protocole = implémentation par défaut
+extension FullyNamed {
+    var fullName: String {
+        return name
+    }
+}
+
+struct Human {
+    let firstName: String
+    let lastName: String
+}
+
+extension Human: FullyNamed {
+    var name: String {
+        firstName
+    }
+
+    var fullName: String {
+        "\(firstName) \(lastName)"
+    }
+}
+
+let me = Human(firstName: "Ludovic", lastName: "Ollagnier")
+me.fullName

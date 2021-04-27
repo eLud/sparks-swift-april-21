@@ -1,9 +1,11 @@
 
 
-struct Ingredient: Hashable {
+struct Ingredient {
     let name: String
     let isVeggie: Bool
 }
+
+extension Ingredient: Hashable { }
 
 struct Meal: Hashable {
     let name: String
