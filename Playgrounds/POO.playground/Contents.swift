@@ -387,3 +387,78 @@ var opt = Optionel.none
 opt = .some(value: "Hello")
 
 let value = opt.unwrap()
+
+@propertyWrapper
+struct Verlan {
+
+    private var value: String
+
+    init(wrappedValue: String) {
+        self.value = String(wrappedValue.reversed())
+    }
+
+    var wrappedValue: String {
+        get {
+            return value
+        }
+
+        set {
+            value = String(newValue.reversed())
+        }
+    }
+}
+
+@propertyWrapper
+struct NonNegative <T: Numeric & Comparable> {
+
+    var value: T
+
+    init(wrappedValue: T) {
+        value = wrappedValue < 0 ? 0 : wrappedValue
+    }
+
+    var wrappedValue: T {
+        get {
+            value
+        }
+
+        set {
+            value = newValue < 0 ? 0 : newValue
+        }
+    }
+}
+
+@propertyWrapper
+struct Versioned<Value> {
+    private var value: Value
+    private(set) var timestampedValues: [(Date, Value)]
+
+    var wrappedValue: Value {
+        get { value }
+
+        set {
+            defer { timestampedValues.append((Date(), value)) }
+            value = newValue
+            print(timestampedValues)
+        }
+    }
+
+    init(wrappedValue: Value) {
+        value = wrappedValue
+        timestampedValues = []
+        timestampedValues.append((Date(), value))
+    }
+}
+
+struct Person {
+    @Verlan var hello: String
+    @Versioned var age: Double
+}
+
+var people1 = Person(hello: "Hello", age: -12.5)
+people1.hello
+
+people1.hello = "Bonjour"
+people1.hello
+people1.age = 10
+people1.age = 4
