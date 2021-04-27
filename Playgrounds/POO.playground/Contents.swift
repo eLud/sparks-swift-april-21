@@ -305,3 +305,85 @@ extension Human: FullyNamed {
 
 let me = Human(firstName: "Ludovic", lastName: "Ollagnier")
 me.fullName
+
+//Enums
+enum CompassPoint {
+    case north
+    case south
+    case east
+    case west
+}
+
+var currentDirection = CompassPoint.north
+currentDirection = .south
+
+//Raw values (String, Int, Double, Float, Character)
+enum TransportType: String {
+    case car
+    case bus
+    case plane = "avion"
+    case rocket
+}
+
+extension TransportType: CaseIterable {
+
+}
+
+TransportType.allCases
+
+let car = TransportType.car
+car.rawValue
+
+let rawString = "avion"
+if let newTransport = TransportType(rawValue: rawString) {
+    print("Transport is \(newTransport)")
+}
+
+// Associated values
+enum TransportStatus {
+    case onTime
+    case delayed(delay: Int, reason: String)
+    case cancelled
+
+    var message: String {
+        switch self {
+        case .onTime:
+            return "We are on schedule"
+        case .delayed(let delay, let reason) where delay <= 5:
+            return "We are currently delayed by \(delay) minutes because of \(reason)"
+        case .delayed(let delay, let reason) where delay > 5:
+            return "We are currently delayed by \(delay) minutes because of \(reason)"
+        case .cancelled:
+            return "We are cancelled"
+        default:
+            return ""
+        }
+    }
+}
+
+var currentStatus = TransportStatus.onTime
+currentStatus = .delayed(delay: 15, reason: "Traffic jam")
+currentStatus.message
+
+for i in 0...100 where i.isMultiple(of: 2) {
+    print(i)
+}
+
+enum Optionel {
+    case some(value: String)
+    case none
+
+    func unwrap() -> String {
+        switch self {
+        case .none:
+            fatalError()
+        case .some(let value):
+            return value
+        }
+    }
+}
+
+var opt = Optionel.none
+opt = .some(value: "Hello")
+
+let value = opt.unwrap()
