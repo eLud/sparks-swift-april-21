@@ -194,3 +194,23 @@ if let iPad2020 = ipadModels[2021] {
 }
 
 let reso = ipadModels[2020]?.faceId?.resolution ?? 0 // Nil coalescing operator : default value
+
+let array: [String] = ["A"]
+guard !array.isEmpty else {
+    fatalError("Empty array, should not happen")
+}
+array.forEach { (str) in
+    print(str)
+}
+
+guard let ipad = ipadModels[2020] else { fatalError() }
+
+
+class Something: Equatable {
+
+    static func == (lhs: Something, rhs: Something) -> Bool {
+        return lhs.foo == rhs.foo
+    }
+
+    var foo: String = ""
+}

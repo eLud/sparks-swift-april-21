@@ -1,6 +1,5 @@
 
 
-
 struct Ingredient: Hashable {
     let name: String
     let isVeggie: Bool
@@ -18,8 +17,13 @@ struct Meal: Hashable {
         ingredients.allSatisfy { $0.isVeggie }
     }
 
-//    init(name: String, ing: [Ingredient], price: Double, pitch: String, preciseDescription: String) {
-//    }
+    init(name: String, ingredients: [Ingredient], price: Double, pitch: String, preciseDescription: String? = nil) {
+        self.name = name
+        self.ingredients = Set(ingredients)
+        self.price = price
+        self.pitch = pitch
+        self.preciseDescription = preciseDescription
+    }
 }
 
 let salade = Ingredient(name: "Salade verte", isVeggie: true)
@@ -54,6 +58,9 @@ class Restaurant {
     }
 
     func add(_ newMeal: Meal) {
+        // Don't add if already in
+        guard !meals.contains(newMeal) else { return }
+
         meals.insert(newMeal)
         mealsArray.append(newMeal)
     }
@@ -72,3 +79,7 @@ test.reduce(0.0, +)
 
 
 let myResto = Restaurant(name: "test", address: "", pitch: "")
+myResto.add(saladeCésar)
+myResto.add(saladeCésar)
+myResto.add(saladeCésar)
+myResto.mealsArray.count
