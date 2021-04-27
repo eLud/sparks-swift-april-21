@@ -288,9 +288,19 @@ extension FullyNamed {
     }
 }
 
-struct Human {
+class Human {
     let firstName: String
     let lastName: String
+
+    // Designated Init
+    init(firstName: String, lastName: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+    }
+
+    convenience init() {
+        self.init(firstName: "John", lastName: "Doe")
+    }
 }
 
 extension Human: FullyNamed {
@@ -369,25 +379,6 @@ for i in 0...100 where i.isMultiple(of: 2) {
     print(i)
 }
 
-enum Optionel {
-    case some(value: String)
-    case none
-
-    func unwrap() -> String {
-        switch self {
-        case .none:
-            fatalError()
-        case .some(let value):
-            return value
-        }
-    }
-}
-
-var opt = Optionel.none
-opt = .some(value: "Hello")
-
-let value = opt.unwrap()
-
 @propertyWrapper
 struct Verlan {
 
@@ -453,7 +444,17 @@ struct Versioned<Value> {
 struct Person {
     @Verlan var hello: String
     @Versioned var age: Double
+
+    static var usual: Person {
+        Person(hello: "Hello", age: 25)
+    }
+
+    static func newBorn(hello: String) -> Person {
+        Person(hello: hello, age: 0)
+    }
 }
+
+Person.usual
 
 var people1 = Person(hello: "Hello", age: -12.5)
 people1.hello
@@ -462,3 +463,46 @@ people1.hello = "Bonjour"
 people1.hello
 people1.age = 10
 people1.age = 4
+
+enum Optionel<T> {
+
+    case some(value: T)
+    case none
+
+    func unwrap() -> T {
+        switch self {
+        case .none:
+            fatalError()
+        case .some(let value):
+            return value
+        }
+    }
+}
+
+var opt: Optionel<Bool> = .none
+opt = .some(value: true)
+
+let value = opt.unwrap()
+
+struct Dico<K: Hashable, V> {
+
+    let key: K
+    let value: V
+
+    func getKey() -> K {
+        return key
+    }
+
+    func getValue() -> V {
+        return value
+    }
+}
+
+let genericDico = Dico(key: "La clé", value: 42)
+genericDico.getValue()
+
+func genericFunc<T>(a: T, b: T) -> T {
+    return a
+}
+
+let genericResult = genericFunc(a: "Hello", b: "World")
