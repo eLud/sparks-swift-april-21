@@ -214,3 +214,58 @@ class Something: Equatable {
 
     var foo: String = ""
 }
+
+let test = [42.3, 67.7, 98.54]
+test.reduce(0.0, +)
+
+let compareDesc = { (n1: Double, n2: Double) -> Bool in
+    return n1 > n2
+}
+
+let compareAsc = { (n1: Double, n2: Double) -> Bool in
+    return n1 < n2
+}
+
+test.sorted(by: compareDesc)
+
+test.sorted(by: compareAsc)
+
+test.sorted(by: { (n1: Double, n2: Double) -> Bool in
+    return n1 < n2
+})
+
+test.sorted { (n1: Double, n2: Double) -> Bool in
+    return n1 < n2
+}
+
+test.sorted { $0 < $1 }
+test.sorted(by: <)
+test.map { String($0) }
+
+
+func repeating(numberOfTime: UInt, something: (UInt)->()) {
+    for i in 0..<numberOfTime {
+        something(i)
+    }
+}
+
+repeating(numberOfTime: 5) { (index) in
+    print("Toto \(index)")
+}
+
+import UIKit
+
+func loadImage(from url: URL, completion: @escaping (String)->() ) {
+
+    DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+        completion("This is the string data from the network from \(url)")
+    }
+
+    print("End of function")
+}
+
+loadImage(from: URL(string: "http://apple.com")!) { (str) in
+    print(str)
+}
+
+print("End of playground")

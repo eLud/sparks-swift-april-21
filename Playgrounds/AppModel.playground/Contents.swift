@@ -74,10 +74,6 @@ class Restaurant {
     }
 }
 
-let test = [42.3, 67.7, 98.54]
-test.reduce(0.0, +)
-
-
 let myResto = Restaurant(name: "test", address: "", pitch: "")
 myResto.add(saladeCésar)
 myResto.add(saladeCésar)
